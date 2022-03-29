@@ -11,6 +11,6 @@ const router = express.Router();
 
 router
   .post('/', validateToken, validateProductsOrder, create)
-  .get('/', validateToken, getAll);
+  .get('/', getAll);
   
 export default router;
