@@ -1,4 +1,4 @@
-import { InputUser } from '../interfaces/User';
+import { InputUser, Login } from '../interfaces/User';
 import statusCode from '../utils/statusCode';
 
 const {
@@ -88,6 +88,15 @@ const userValidation = ({ username, classe, level, password }: InputUser) => {
   return null;
 };
 
+const loginValidation = ({ username, password }: Login) => {
+  const nameError = validateName(username);
+  if (nameError) return nameError;
+  const passwordError = validatePassword(password);
+  if (passwordError) return passwordError;
+  return null;
+};
+
 export default {
   userValidation,
+  loginValidation,
 };
