@@ -4,9 +4,11 @@ import statusCode from '../utils/statusCode';
 const {
   nameIsRequired, nameIsString, nameLength,
   amountIsRequired, amountIsString, amountLength,
+  productIsRequired, ProductIsArrayOfNumbers, ProductLength,
 } = statusCode.errors;
 
 const MIN_NAME_LENGTH = 2;
+const ZERO = 0;
 
 const validateName = (username: string) => {
   if (!username) {
@@ -40,6 +42,21 @@ const validateAmount = (amount: string) => {
   return null;
 };
 
+const validateProducts = (products: number[]) => {
+  if (!products) {
+    const { code, error } = productIsRequired;
+    return { code, error };
+  }
+  if (typeof products !== typeof []) {
+    const { code, error } = ProductIsArrayOfNumbers;
+    return { code, error };
+  }
+  if (products.length === ZERO) {
+    const { code, error } = ProductLength;
+    return { code, error };
+  }
+  return null;
+};
 const productValidation = ({ name, amount }: InputProduct) => {
   const nameError = validateName(name);
   if (nameError) return nameError;
@@ -48,6 +65,13 @@ const productValidation = ({ name, amount }: InputProduct) => {
   return null;
 };
 
+const productsOrderValidation = (products: number[]) => {
+  const productsError = validateProducts(products);
+  if (productsError) return productsError;
+  return null;
+};
+
 export default {
   productValidation,
+  productsOrderValidation,
 };
