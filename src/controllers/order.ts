@@ -6,7 +6,7 @@ import JWT from '../utils/generateToken';
 
 import service from '../services/order';
 
-const { Created } = statusCode.StatusCodes;
+const { Created, OK } = statusCode.StatusCodes;
 
 const create = async (req: Request, res: Response) => {
   const { authorization } = req.headers as JwtPayload;
@@ -19,6 +19,13 @@ const create = async (req: Request, res: Response) => {
   return res.status(Created).json({ order });
 };
 
+const getAll = async (_req: Request, res: Response) => {
+  const order = await service.getAll();
+  
+  return res.status(OK).json(order);
+};
+
 export default {
   create,
+  getAll,
 };
