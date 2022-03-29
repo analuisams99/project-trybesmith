@@ -5,11 +5,12 @@ import validation from '../middlewares/productValidation';
 
 const { validateProductsOrder } = validation;
 
-const { create } = controllers;
+const { create, getAll } = controllers;
 
 const router = express.Router();
 
 router
-  .post('/', validateToken, validateProductsOrder, create);
+  .post('/', validateToken, validateProductsOrder, create)
+  .get('/', validateToken, getAll);
   
 export default router;
