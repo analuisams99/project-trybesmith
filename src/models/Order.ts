@@ -22,6 +22,18 @@ const create = async (userId: number, products: number[]): Promise<Order> => {
   };
 };
 
+const getById = async (orderId: number) => {
+  const queryUserId = 'SELECT * FROM Trybesmith.Orders WHERE id = ?';
+  const [order] = await connection.execute<RowDataPacket[]>(queryUserId, [orderId]);
+  const response = order[0] as ProductOrder;
+
+  if (response === undefined) {
+    return false;
+  }
+
+  return response;
+};
+
 const getAll = async (): Promise<ProductOrder[] | []> => {
   const queryOrders = 'SELECT * FROM Trybesmith.Orders';
   const [orders] = await connection.execute<RowDataPacket[]>(queryOrders);  
@@ -32,5 +44,6 @@ const getAll = async (): Promise<ProductOrder[] | []> => {
 
 export default {
   create,
+  getById,
   getAll,
 };

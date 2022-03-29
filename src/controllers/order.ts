@@ -6,6 +6,7 @@ import JWT from '../utils/generateToken';
 
 import service from '../services/order';
 
+const { orderNotFound } = statusCode.errors;
 const { Created, OK } = statusCode.StatusCodes;
 
 const create = async (req: Request, res: Response) => {
@@ -19,6 +20,18 @@ const create = async (req: Request, res: Response) => {
   return res.status(Created).json({ order });
 };
 
+const getById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const order = await service.getById(+id);
+  
+  if (order === false) {
+    const { code, error } = orderNotFound;
+    return res.status(code).json({ error });
+  }
+
+  return res.status(OK).json(order);
+};
+
 const getAll = async (_req: Request, res: Response) => {
   const order = await service.getAll();
   
@@ -27,5 +40,6 @@ const getAll = async (_req: Request, res: Response) => {
 
 export default {
   create,
+  getById,
   getAll,
 };

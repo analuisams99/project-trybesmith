@@ -17,6 +17,23 @@ const generateProductOrder = (productsArray: Product[], orderId: number) => prod
   },
 );
 
+const getById = async (orderId: number) => {  
+  const order = await orderModel.getById(orderId);
+  const productsArray = await productModel.getAll();
+  
+  if (order === false) {
+    return false;
+  }
+
+  const productOrders = {
+    id: order.id,
+    userId: order.userId,
+    products: generateProductOrder(productsArray, order.id).filter((id) => id !== null),
+  };
+
+  return productOrders;
+};
+
 const getAll = async () => {  
   const orderArray = await orderModel.getAll();
   const productsArray = await productModel.getAll();
@@ -35,5 +52,6 @@ const getAll = async () => {
 
 export default {
   create,
+  getById,
   getAll,
 };
